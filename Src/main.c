@@ -47,34 +47,34 @@ int main(void)
 
   /* Enable clock for GPIO port A*/
 
-  *((volatile uint32_t *) (uint32_t)(0x40021000  + 0x014U)) |= (uint32_t)(1 << 17);
+  AHB_REGISTER |= (uint32_t)(1 << 17);
 
   /* GPIOA pin 3 and 4 setup */
   //Set mode for pin 4
-    *((volatile uint32_t *)((uint32_t)0x48000000)) &= ~(uint32_t)(0x3 << 8);
-    *((volatile uint32_t *)((uint32_t)0x48000000)) |= (uint32_t)(1 << 8);
+  	GPIOA_BASE_REG &= ~(uint32_t)(0x3 << 8);
+  	GPIOA_BASE_REG |= (uint32_t)(1 << 8);
   //Set mode for pin 3
-  	*((volatile uint32_t *)((uint32_t)0x48000000)) &= ~(uint32_t)(0x3 << 6);
+  	GPIOA_BASE_REG &= ~(uint32_t)(0x3 << 6);
 
     /*GPIO OTYPER register*/
-    *((volatile uint32_t *)((uint32_t)(0x48000000 + 0x04U))) &= ~(1 << 4);
+  	GPIOA_OTYPER_REG &= ~(1 << 4);
 
     /*GPIO OSPEEDR register*/
     //Set Low speed for GPIOA pin 4
-    *((volatile uint32_t *)((uint32_t)(0x48000000 + 0x08U))) &= ~(0x3 << 8);
+  	GPIOA_OSPEEDER_REG &= ~(0x3 << 8);
 
     /*GPIO PUPDR register, reset*/
     //Set pull up for GPIOA pin 4 (input)
-    *((volatile uint32_t *)((uint32_t)(0x48000000 + 0x0CU))) |= (1 << 6);
+  	GPIOA_PUPDR_REG |= (1 << 6);
     //Set no pull for GPIOA pin 3
-    *((volatile uint32_t *)((uint32_t)(0x48000000 + 0x0CU))) &= ~(0x3 << 8);
+  	GPIOA_PUPDR_REG &= ~(0x3 << 8);
 
 
 
   while (1)
   {
 
-	  if(!(*((volatile uint32_t *)((uint32_t)(0x48000000 + 0x10U))) & (1 << 3)))
+	  if(!(BUTTON_GET_STATE & (1 << 3)))
 	  {
 		  // 0.25s delay
 		  LL_mDelay(250);
@@ -86,10 +86,10 @@ int main(void)
 	  else
 	  {
 		  // 1s delay
-		  LL_mDelay(1000);
+		  LL_mDelay(500);
 		  LED_ON;
 		  // 1s delay
-		  LL_mDelay(1000);
+		  LL_mDelay(5);
 		  LED_OFF;
 	  }
 
