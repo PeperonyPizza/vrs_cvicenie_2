@@ -47,7 +47,7 @@ int main(void)
 
   /* Enable clock for GPIO port A*/
 
-  AHB_REGISTER |= (uint32_t)(1 << 17);
+  RCC_AHBENR_REG |= (uint32_t)(1 << 17);
 
   /* GPIOA pin 3 and 4 setup */
   //Set mode for pin 4
@@ -86,10 +86,10 @@ int main(void)
 	  else
 	  {
 		  // 1s delay
-		  LL_mDelay(500);
+		  LL_mDelay(400);
 		  LED_ON;
 		  // 1s delay
-		  LL_mDelay(5);
+		  LL_mDelay(40);
 		  LED_OFF;
 	  }
 
